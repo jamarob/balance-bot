@@ -1,6 +1,7 @@
-import { PaymentDocument } from '../models/Payment'
+import { Payment, PaymentDocument } from '../models/Payment'
 
-export const getBalances = (payments: PaymentDocument[]) => {
+export const getBalances = async () => {
+  const payments: PaymentDocument[] = await Payment.find()
   const balances = new Map<string, number>()
 
   payments.forEach((payment) => {
@@ -16,4 +17,9 @@ export const getBalances = (payments: PaymentDocument[]) => {
   })
 
   return balances
+}
+
+export const addPayment = async (user: string, amount: number) => {
+  const payment = new Payment({ by: user, amount, date: new Date() })
+  return await payment.save()
 }
