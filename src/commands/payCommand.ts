@@ -1,5 +1,5 @@
 import { TelegrafContext } from 'telegraf/typings/context'
-import { addPayment } from '../services/paymentServices'
+import { addPayment } from '../services/paymentService'
 
 export default async (ctx: TelegrafContext) => {
   if (!(ctx.message?.text && ctx.from)) {
@@ -12,6 +12,6 @@ export default async (ctx: TelegrafContext) => {
   const amount = Number(text.replace('/pay', '').replace(',', '.').trim())
   const user = from.first_name
 
-  await addPayment(user, amount)
-  ctx.reply('👍')
+  const balances = await addPayment(user, amount)
+  ctx.reply('👍\n'+balances)
 }
